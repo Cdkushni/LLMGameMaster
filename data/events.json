@@ -1,0 +1,5 @@
+[
+    {"phase": "Build-Up", "description": "Rumors spread in {location} of strange activity in the nearby woods.", "effect": null},
+    {"phase": "Conflict", "description": "{faction} raids {location}, causing chaos!", "effect": {"query": "UPDATE locations SET prosperity = prosperity - 10, safety = safety - 20 WHERE name = ?", "params": ["{location}"]}},
+    {"phase": "Climax", "description": "A champion of {faction} challenges the knight in {location}!", "effect": null}
+]

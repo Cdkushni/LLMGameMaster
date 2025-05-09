@@ -1,0 +1,31 @@
+# Rust-specific ignores
+/target/
+**/*.rs.bk
+
+# Yew/WebAssembly frontend ignores
+/webui/dist/
+*.wasm
+/webui/pkg/
+
+# SQLite database
+world.db
+world.db-shm
+world.db-wal
+
+# Environment variables and secrets
+.env
+GROK_API_KEY
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
