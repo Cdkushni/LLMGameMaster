@@ -1,8 +1,9 @@
-# Rust-specific ignores
+# Rust build artifacts
 /target/
 **/*.rs.bk
+/webui/target/
 
-# Yew/WebAssembly frontend ignores
+# Trunk/WebAssembly build output
 /webui/dist/
 *.wasm
 /webui/pkg/
@@ -14,7 +15,9 @@ world.db-wal
 
 # Environment variables and secrets
 .env
+*.env
 GROK_API_KEY
+STABILITY_API_KEY
 
 # IDE and editor files
 .vscode/
@@ -29,3 +32,12 @@ Thumbs.db
 
 # Logs
 *.log
+
+# Cargo lock (optional, include if dependencies are pinned)
+/Cargo.lock
+/webui/Cargo.lock
+
+# Temporary files
+*.tmp
+*.bak
+*.cache

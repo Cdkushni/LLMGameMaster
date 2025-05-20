@@ -22,11 +22,32 @@ pub struct Player { pub id: i32, pub location_id: i32, pub reputation: i32 }
 pub struct World { pub tension: i32, pub story_phase: String }
 
 pub async fn init_db(pool: &SqlitePool) -> Result<(), sqlx::Error> {
+    //sqlx::query("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY, name TEXT, prosperity INTEGER, safety INTEGER)").execute(pool).await?;
+    //sqlx::query("CREATE TABLE IF NOT EXISTS factions (id INTEGER PRIMARY KEY, name TEXT, power INTEGER, relation TEXT)").execute(pool).await?;
+    //sqlx::query("CREATE TABLE IF NOT EXISTS npcs (id INTEGER PRIMARY KEY, name TEXT, role TEXT, status TEXT, location_id INTEGER)").execute(pool).await?;
+    //sqlx::query("CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY, location_id INTEGER, reputation INTEGER)").execute(pool).await?;
+    //sqlx::query("CREATE TABLE IF NOT EXISTS world (id INTEGER PRIMARY KEY, tension INTEGER, story_phase TEXT)").execute(pool).await?;
+    //sqlx::query("CREATE TABLE IF NOT EXISTS event_log (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, description TEXT, caused_by TEXT)").execute(pool).await?;
+    //Ok(())
+    sqlx::query("CREATE TABLE IF NOT EXISTS world (id INTEGER PRIMARY KEY, tension INTEGER, story_phase TEXT)").execute(pool).await?;
+    sqlx::query("CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY, location_id INTEGER, reputation INTEGER)").execute(pool).await?;
     sqlx::query("CREATE TABLE IF NOT EXISTS locations (id INTEGER PRIMARY KEY, name TEXT, prosperity INTEGER, safety INTEGER)").execute(pool).await?;
     sqlx::query("CREATE TABLE IF NOT EXISTS factions (id INTEGER PRIMARY KEY, name TEXT, power INTEGER, relation TEXT)").execute(pool).await?;
     sqlx::query("CREATE TABLE IF NOT EXISTS npcs (id INTEGER PRIMARY KEY, name TEXT, role TEXT, status TEXT, location_id INTEGER)").execute(pool).await?;
-    sqlx::query("CREATE TABLE IF NOT EXISTS player (id INTEGER PRIMARY KEY, location_id INTEGER, reputation INTEGER)").execute(pool).await?;
-    sqlx::query("CREATE TABLE IF NOT EXISTS world (id INTEGER PRIMARY KEY, tension INTEGER, story_phase TEXT)").execute(pool).await?;
+    sqlx::query("CREATE TABLE IF NOT EXISTS story_events (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        narrative TEXT,
+        state_changes TEXT, -- JSON string of changes applied
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )").execute(pool).await?;
+    sqlx::query("CREATE TABLE IF NOT EXISTS branch_choices (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        event_id INTEGER,
+        description TEXT,
+        state_changes TEXT, -- JSON string of changes
+        is_default BOOLEAN,
+        FOREIGN KEY (event_id) REFERENCES story_events(id)
+    )").execute(pool).await?;
     sqlx::query("CREATE TABLE IF NOT EXISTS event_log (id INTEGER PRIMARY KEY AUTOINCREMENT, timestamp TEXT, description TEXT, caused_by TEXT)").execute(pool).await?;
     Ok(())
 }
